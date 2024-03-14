@@ -45,14 +45,21 @@ For ObjectPI dataset:
 ```bash
 python testPiRO.py OOWL dual model_weights/OOWL/Dual_CAT_PiOBJ_PiCAT.pth
 ```
+![ObjectPI](https://github.com/sarkar-rohan/PiRO/assets/17092235/ac40bbc0-9504-46f2-967f-348aca0632d2)
+
 For ModelNet-40 dataset:
 ```bash
 python testPiRO.py MNet40 dual model_weights/MNet40/Dual_CAT_PiOBJ_PiCAT.pth
 ```
+![ModelNet-40](https://github.com/sarkar-rohan/PiRO/assets/17092235/f5259666-cade-4fff-bae6-8691585f090b)
+
 For FG3D dataset:
 ```bash
 python testPiRO.py FG3D dual model_weights/FG3D/Dual_CAT_PiOBJ_PiCAT.pth
 ```
+![FG3D](https://github.com/sarkar-rohan/PiRO/assets/17092235/20038525-928a-4884-9d08-19addc84aa3f)
+
+
 ### Evaluation of models trained from scratch
 If you trained a model from scratch it will be stored in the results directory
 To evaluate the dual-encoder model, please use the following command: 
