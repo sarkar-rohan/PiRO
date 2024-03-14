@@ -12,7 +12,7 @@ We use the following multi-view datasets in our work:
 - ModelNet-40
 - FG3D
 
-For learning, we have organized these datasets such that the multi-view images of each object identity are stored in a separate subfolder. 
+For learning, we have organized these datasets such that the multi-view images of each object identity are stored in a separate subfolder with an integer ID indicating the object-identity. 
 The train and test splits for the above-mentioned datasets can be downloaded from [Google Drive]() .
 The mapping of object-identities to categories is also provided as `train_o2c.npy` and `test_o2c.npy` files.
 
