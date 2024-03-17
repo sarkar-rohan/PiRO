@@ -35,7 +35,10 @@ where,
 - `dataset_name` should be passed as `OOWL` for ObjectPI, `MNet40` for ModelNet-40, and `FG3D` for the FG3D datasets.
 - `experiment_name` is a user-specified string for saving the trained model weights in the result directory.
 - `run_number` is an integer for different runs
-
+For example, to train on the ObjectPI (OOWL) dataset, please run the following:
+```bash
+python trainPiRO_Dual.py OOWL test_R1 1
+```
 ## Testing and Evaluation
 
 ### Evaluation of our trained models
