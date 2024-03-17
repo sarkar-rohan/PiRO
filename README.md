@@ -22,7 +22,8 @@ unzip data.zip
 ```
 
 ## Training
-If you wish to train a model from scratch
+If you wish to train a model from scratch, please follow the instructions below: 
+
 To train the dual-encoder model, please use the following command: 
 ```bash
 python trainPiRO_Dual.py dataset_name experiment_name run_number
@@ -35,6 +36,7 @@ where,
 - `dataset_name` should be passed as `OOWL` for ObjectPI, `MNet40` for ModelNet-40, and `FG3D` for the FG3D datasets.
 - `experiment_name` is a user-specified string for saving the trained model weights in the result directory.
 - `run_number` is an integer for different runs
+
 For example, to train on the ObjectPI (OOWL) dataset, please run the following:
 ```bash
 python trainPiRO_Dual.py OOWL test_R1 1
