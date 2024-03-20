@@ -31,21 +31,20 @@ class PILossOBJ(nn.Module):
         """ Compute inter-class distance between MV embeddings of both objects """
         MV_AMV_N_inter = torch.cdist(MV_A.unsqueeze(1),MV_N.unsqueeze(1)).squeeze()
         """ Compute inter-class distance between confuser embeddings of both objects """
-        MC_inter = torch.min(torch.min(dSV_A_SVN_N,0).values,0).values
+        AN_inter = torch.min(torch.min(dSV_A_SVN_N,0).values,0).values
         """ Compute intra-class distance between MV and confuser embeddings 
             for each object """
-        A_clstr = torch.cdist(MV_A.unsqueeze(1),f_confuser_A.unsqueeze(1)).squeeze()
-        C_intra = torch.cdist(MV_N.unsqueeze(1),f_confuser_N.unsqueeze(1)).squeeze()
+        A_cluster = torch.cdist(MV_A.unsqueeze(1),f_confuser_A.unsqueeze(1)).squeeze()
+        N_cluster = torch.cdist(MV_N.unsqueeze(1),f_confuser_N.unsqueeze(1)).squeeze()
         """ Clustering loss component """
-        loss_M_cluster = F.relu(A_clstr - self.alpha)
-        loss_C_cluster = F.relu(C_intra - self.alpha)
+        loss_A_cluster = F.relu(A_cluster - self.alpha)
+        loss_N_cluster = F.relu(N_cluster - self.alpha)
         """ Separation loss component """
-        loss_MC_inter = F.relu(self.beta - MC_inter)
+        loss_AN_inter = F.relu(self.beta - AN_inter)
         loss_MV_AMV_N_inter = F.relu(self.beta - MV_AMV_N_inter)
         """ Total loss """
-        losses = self.lamda*(loss_MC_inter+loss_MV_AMV_N_inter)+loss_M_cluster+loss_C_cluster
-        #print("PI OBJ LOSS",losses, loss_MC_inter, loss_MV_AMV_N_inter, loss_M_cluster, loss_C_cluster)
-        info_quads = [torch.numel(torch.nonzero(losses)), MC_inter.pow(0.5).mean(), 0.5*(A_clstr.pow(0.5).mean()+C_intra.pow(0.5).mean()), torch.min(MC_inter.pow(0.5))]
+        losses = self.lamda*(loss_AN_inter+loss_MV_AMV_N_inter)+loss_A_cluster+loss_N_cluster
+        info_quads = [torch.numel(torch.nonzero(losses)), AN_inter.pow(0.5).mean(), 0.5*(A_cluster.pow(0.5).mean()+N_cluster.pow(0.5).mean()), torch.min(AN_inter.pow(0.5))]
         avg_loss =  losses.mean() if size_average else losses.sum()
         return avg_loss, info_quads
     
@@ -73,7 +72,6 @@ class PILossCAT(nn.Module):
         loss_SV_N_MV_N = F.relu(d_SV_N_MV_N - self.theta)
         loss_MV_A_MV_N = F.relu(d_MV_A_MV_N - self.theta)
         losses = loss_SV_A_MV_A + loss_SV_N_MV_N + loss_MV_A_MV_N
-        #print("PI_CAT_LOSS",losses, loss_SV_A_MV_A, loss_SV_N_MV_N, loss_MV_A_MV_N)
         avg_loss =  losses.mean() if size_average else losses.sum()
         return avg_loss
     

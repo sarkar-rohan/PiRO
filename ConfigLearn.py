@@ -30,7 +30,7 @@ class HyperParams():
             self.n_randsamp_class = 8 
             self.lamda = 1.0 # controls weight for inter-class separation
         elif dataset == 'FG3D':
-            self.batchSize = 3
+            self.batchSize = 9
             self.n_randsamp_class = 12
             # give higher weigtage for better separation of fine-grained objects
             self.lamda = 2.0 # controls weight for inter-class separation
@@ -80,13 +80,13 @@ class ConfigOOWL():
         self.class_list = clist
         print(clist)
         
-        self.LR = 0.00001 # 0.0001
+        self.LR = 0.00001 
         self.alpha = a
         self.inpChannel = 3
         self.imgDim = 224
         self.embedDim = edim
         self.vData = False
-        self.Ncomp = 5
+        self.Ncomp = 10
         self.gal_vp = []
         self.probe_vp = []
         self.train_dataAug = transforms.Compose([ 
@@ -121,7 +121,7 @@ class ConfigMNet40():
         self.save_plot_learn_path = self.save_path+str(case)+'_MNet40learn.png'
         
         self.BS = bs
-        self.Nepochs = 50
+        self.Nepochs = 25 # 50
         self.Ncls = 40
         self.Niter = 1
         self.Ntrain = 3183
@@ -140,7 +140,7 @@ class ConfigMNet40():
             clist[x] = temp   
         self.class_list = clist
         print(clist)
-        self.LR = 0.00001 # 0.0001
+        self.LR = 0.00001 
         self.alpha = a
         self.inpChannel = 3
         self.imgDim = 224
@@ -158,7 +158,6 @@ class ConfigMNet40():
                                  ])
         #=====================================================================
         N_G_B = 12
-        #self.metaCategories = [range(x-15, x+1) for x in range(16, 383, 16)]
         self.gal_vp = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
         self.probe_vp = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
         self.N_G = min(len(self.gal_vp),N_G_B) 
@@ -200,13 +199,13 @@ class ConfigFG3D():
             clist[x] = temp   
         self.class_list = clist
         print(clist)
-        self.LR = 0.00005 # 0.00001
+        self.LR = 0.00005 
         self.alpha = a
         self.inpChannel = 3
         self.imgDim = 224
         self.embedDim = edim
         self.vData = False
-        self.Ncomp = 3 # 10
+        self.Ncomp = 3
         self.gal_vp = []
         self.probe_vp = []
         self.train_dataAug = transforms.Compose([ 
@@ -218,7 +217,6 @@ class ConfigFG3D():
                                  ])
         #=====================================================================
         N_G_B = 12
-        #self.metaCategories = [range(x-15, x+1) for x in range(16, 383, 16)]
         self.gal_vp = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
         self.probe_vp = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
         self.N_G = min(len(self.gal_vp),N_G_B) 

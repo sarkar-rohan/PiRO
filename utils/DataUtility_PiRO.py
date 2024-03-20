@@ -20,12 +20,6 @@ import numpy as np
 ===============================================================================
     CUSTOM DATALOADERS FOR MULTI-VIEW TRAINING IMAGES FROM A PAIR OF OBJECTS
 ===============================================================================
-self.transform = Config.train_dataAug # specifies transforms for data augmentation
-self.gal_vp  = Config.gal_vp # specifies the gallery images 
-self.N_vp = len(Config.gal_vp) # specifies the number of gallery images 
-self.dpath = Config.gallery_dir # specifies the path for the gallery images
-self.N_class = Config.Nclass # specifies the number of classes
-self.N_comp = Config.Ncomp # For each object, this specifies the number of objects to compare with in each epoch
 
 Methodology of sampling: 
 __get_item__ function randomly samples one object (objx) and then randomly samples 
@@ -46,14 +40,11 @@ class OOWLTrainDataset(Dataset):
         self.N_vp = len(Config.gal_vp) 
         self.dpath = Config.gallery_dir
         self.N_class = Config.Ntrain
-        self.N_comp = 10
+        self.N_comp = Config.Ncomp
         self.obj2cls = Config.o2ctrain
         self.cls2obj = Config.class_list
-        #print(self.obj2cls)
-        #print(self.cls2obj)
         self.dataset = name
         self.N_G = Config.N_G
-        self.N_samples = 1
         print("Sample from same category !!!")
         
         
@@ -67,10 +58,9 @@ class OOWLTrainDataset(Dataset):
         
     def __getitem__(self,index):
         # Get main class label from index
-        objx = int(index/(self.N_comp*self.N_samples))
+        objx = int(index/(self.N_comp))
         cls = self.obj2cls[objx]
-        allobjcls = self.cls2obj[cls].copy() ##### UNCOMMENT THIS
-        #allobjcls = list(range(self.N_class)) #### COMMENT THIS (RANDOM SAMPLING)
+        allobjcls = self.cls2obj[cls].copy() 
         allobjcls.remove(objx)
         objp = random.choice(allobjcls)
         
@@ -85,7 +75,7 @@ class OOWLTrainDataset(Dataset):
         return torch.stack(ximage), torch.stack(pimage), torch.stack(label)
         
     def __len__(self):
-        return self.N_class*self.N_comp*self.N_samples
+        return self.N_class*self.N_comp
       
         
 """
@@ -105,7 +95,6 @@ class MNet40TrainDataset(Dataset):
         self.cls2obj = Config.class_list
         self.dataset = name
         self.N_G = Config.N_G
-        self.N_samples = 1
         print("Sample from same category !!!")
         
     def applyTransform(self,img_path):
@@ -117,10 +106,9 @@ class MNet40TrainDataset(Dataset):
         return img
         
     def __getitem__(self,index):
-        objx = int(index/(self.N_comp*self.N_samples))
+        objx = int(index/(self.N_comp))
         cls = self.obj2cls[objx]
         allobjcls = self.cls2obj[cls].copy()
-        #allobjcls = list(range(self.N_class)) #### COMMENT THIS (RANDOM SAMPLING)
         allobjcls.remove(objx)
         objp = random.choice(allobjcls)
         ximage = list()
@@ -134,7 +122,7 @@ class MNet40TrainDataset(Dataset):
         return torch.stack(ximage), torch.stack(pimage), torch.stack(label)
         
     def __len__(self):
-        return self.N_class*self.N_comp*self.N_samples
+        return self.N_class*self.N_comp
 
 """
 Custom Dataset class for Fine-grained 3D (FG3D) Dataset
@@ -154,7 +142,6 @@ class FG3DTrainDataset(Dataset):
         self.cls2obj = Config.class_list
         self.dataset = name
         self.N_G = Config.N_G
-        self.N_samples = 1
         print("Sample from same category !!!")
         
     def applyTransform(self,img_path):
@@ -166,10 +153,9 @@ class FG3DTrainDataset(Dataset):
         return img
         
     def __getitem__(self,index):
-        objx = int(index/(self.N_comp*self.N_samples))
+        objx = int(index/(self.N_comp))
         cls = self.obj2cls[objx]
         allobjcls = self.cls2obj[cls].copy()
-        #allobjcls = list(range(self.N_class)) #### COMMENT THIS (RANDOM SAMPLING)
         allobjcls.remove(objx)
         objp = random.choice(allobjcls)
         ximage = list()
@@ -183,7 +169,7 @@ class FG3DTrainDataset(Dataset):
         return torch.stack(ximage), torch.stack(pimage), torch.stack(label)
         
     def __len__(self):
-        return self.N_class*self.N_comp*self.N_samples
+        return self.N_class*self.N_comp
     
 """
 ===============================================================================
@@ -342,6 +328,5 @@ def calculate_stats(net, Config, dataset, emb_space = 'dual'):
 
     for i in tqdm(range(Config.Ntrain)):
         distance_stats(i)
-    #print(np.asarray(interCN_catg).shape, np.asarray(interCN_min).shape)
     distInfo = [np.mean(maxdisintra), np.mean(disintra), np.mean(interCN_catg), np.mean(interCN_min)]
     return distInfo

@@ -3,8 +3,8 @@
 """
 ===============================================================================
 Code for Pose-invariant Classification and Retrieval (PICR) using 
-Pose-invariant Attention Network to learn dual category and object embeddings
-simultaneously by training jointly using L-Softmax and Pose-invariant losses
+Pose-invariant Attention Network to learn category and object embeddings in the
+same space by training jointly using L-Softmax and Pose-invariant losses
 ===============================================================================
 """
 """
@@ -25,14 +25,16 @@ from tqdm import tqdm
 """
 Load utility functions 
 -------------------------------------------------------------------------------
-VGG_PAN_DMHA : Set-Encoder Architecture with VGG Backbone
-QuadrupletUtility: CrossView loss and Quadruplet sampling
-DataUtility: Custom dataloader for different datasets, automatic selection of 
-             classes for comparison, other data related utility functions
-InferenceUtility: Functions for inference and computation of cross-view 
-                  classification accuracy
+VGG_PAN_SingleEmb : Pose-invariant Attention Network Architecture with VGG 
+                    Backbone for learning embeddings in a single embedding space 
+PILosses: Pose-invariant Object and Pose-invariant Category Loss
+CategoryLoss: Category Loss using Large Margin Softmax Loss
+DataUtility_PiRO: Custom dataloader for different datasets, and other 
+                  data-related utility functions
+InferenceUtility_large: Functions for inference and computation of 
+                        pose-invariant recognition accuracy and retrieval mAP
 helperFunctions: Other utility functions
-ConfigInfo: Training and Testing Configurations for different datasets
+ConfigLearn: Training and Testing Configurations for different datasets
 -------------------------------------------------------------------------------
 """
 from models.VGG_PAN_SingleEmb import SingleModel
@@ -47,9 +49,9 @@ from ConfigLearn import ConfigOOWL, ConfigMNet40, ConfigFG3D
 """
 Input information and hyper-parameters from user
 """
-dataset = sys.argv[1] # OOWL or MNet40
-expname = sys.argv[2]
-seed = int(sys.argv[3])
+dataset = sys.argv[1] # OOWL, MNet40, FG3D
+expname = sys.argv[2] # user-specified experiment name
+seed = int(sys.argv[3]) # seed
 hp = HyperParams(dataset, expname, seed)
 
 print("Large Margin Softmax Loss for classification: ", hp.gamma, " nHeads: ", hp.nHeads, "nLayers: ", hp.nLayers )
@@ -111,22 +113,7 @@ Define optimizer and scheduler
 """
 optimizer = optim.Adam(trcv_model.parameters(),lr = Config.LR )
 scheduler = StepLR(optimizer, step_size=Config.Nepochs/5, gamma=0.5)
-"""
-def category_loss(catembA, catembN, catlabel):
-    dim = catlabel.shape
-    catlabel = catlabel.reshape(dim[0]*dim[1]).cuda()
-        
-    catembA = catembA.reshape(dim[0]*dim[1], Config.embedDim)
-    catembN = catembN.reshape(dim[0]*dim[1], Config.embedDim)
-        
-    hard_sampA = mine_criterion(catembA, catlabel)
-    hard_sampN = mine_criterion(catembN, catlabel)
-        
-    L_CAT_A = coarse_cls_criterion(catembA, catlabel, hard_sampA)
-    L_CAT_N = coarse_cls_criterion(catembN, catlabel, hard_sampN)
-    L_CAT = L_CAT_A + L_CAT_N
-    return L_CAT
-"""
+
 def train(epoch):
     sum_loss = 0.0
     avg_loss = 0.0
@@ -166,8 +153,6 @@ def train(epoch):
         L_PiOBJ, IQuads = pi_obj_criterion(SV_A.transpose(1,0), SV_N.transpose(1,0), MV_A, MV_N)
         
         L_CAT = cat_criterion(SV_A, SV_N, label_category)
-        
-        #L_PiCAT = pi_cat_criterion(SV_A, SV_N, MV_A, MV_N)
         
         infoQuads += (IQuads[0]/hp.batchSize)
         if hp.task == "CAT":

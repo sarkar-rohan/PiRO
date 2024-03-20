@@ -25,16 +25,16 @@ from tqdm import tqdm
 """
 Load utility functions 
 -------------------------------------------------------------------------------
-VGG_PAN_DualEmb : Pose-invariant Attention Network Architecture for learning 
-                  Dual Embeddings with VGG Backbone
+VGG_PAN_DualEmb : Pose-invariant Attention Network Architecture with VGG 
+                  Backbone for learning embeddings in a dual embedding space 
 PILosses: Pose-invariant Object and Pose-invariant Category Loss
 CategoryLoss: Category Loss using Large Margin Softmax Loss
 DataUtility_PiRO: Custom dataloader for different datasets, and other 
                   data-related utility functions
-InferenceUtility_large: Functions for inference and computation of cross-view 
-                  classification accuracy
+InferenceUtility_large: Functions for inference and computation of 
+                        pose-invariant recognition accuracy and retrieval mAP
 helperFunctions: Other utility functions
-ConfigInfo: Training and Testing Configurations for different datasets
+ConfigLearn: Training and Testing Configurations for different datasets
 -------------------------------------------------------------------------------
 """
 from models.VGG_PAN_DualEmb import DualModel
@@ -50,7 +50,7 @@ from ConfigLearn import ConfigOOWL, ConfigMNet40, ConfigFG3D
 Input information and hyper-parameters from user
 """
 dataset = sys.argv[1] # OOWL, MNet40, FG3D
-expname = sys.argv[2] # user-specified description
+expname = sys.argv[2] # user-specified experiment name
 seed = int(sys.argv[3]) # seed
 hp = HyperParams(dataset, expname, seed)
 

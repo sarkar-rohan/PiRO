@@ -39,7 +39,7 @@ Input information and hyper-parameters from user
 """
 dataset = sys.argv[1] # OOWL, MNet40, FG3D
 emb_space = sys.argv[2] # single or dual
-model_path = sys.argv[3] 
+model_path = sys.argv[3] # model path
 
 hp = HyperParams(dataset)
 
