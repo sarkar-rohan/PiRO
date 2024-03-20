@@ -13,7 +13,7 @@ We use the following multi-view datasets in our work:
 - FG3D
 
 For learning, we have organized these datasets such that the multi-view images of each object identity are stored in a separate subfolder with an integer ID indicating the object-identity. 
-The train and test splits for the above-mentioned datasets can be downloaded from [Google Drive]() .
+The train and test splits for the above-mentioned datasets can be downloaded from [Google Drive](https://drive.google.com/file/d/1BEl7XAqYK13NGOMuahMy-hxK4oSLRc8J/view?usp=sharing) .
 The mapping of object-identities to categories is also provided as `train_o2c.npy` and `test_o2c.npy` files.
 
 For using these datasets please unzip the data.zip file using
@@ -44,7 +44,7 @@ python trainPiRO_Dual.py OOWL test_R1 1
 ## Testing and Evaluation
 
 ### Evaluation of our trained models
-Download the model weights from [Google Drive]()
+Download the model weights from [Google Drive](https://drive.google.com/drive/folders/1jsJaTmgF7M8Gvh0yIDGr9tWch339qMKE?usp=sharing)
 
 For ObjectPI dataset: 
 ```bash
