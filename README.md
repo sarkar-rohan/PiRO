@@ -83,7 +83,7 @@ python testPiRO.py dataset_name single model_path
 
 ## Citation
 If you use this method in your research, please cite :  
-```bash
+```
 @InProceedings{Sarkar_2024_CVPR,  
     author    = {Sarkar, Rohan and Kak, Avinash},  
     title     = {Dual Pose-invariant Embeddings: Learning Category and Object-specific Discriminative Representations for Recognition and Retrieval},  
