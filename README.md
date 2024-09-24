@@ -39,7 +39,7 @@ where,
 
 For example, to train on the ObjectPI (OOWL) dataset, please run the following:
 ```bash
-python trainPiRO_Dual.py OOWL test_R1 1
+python trainPiRO_Dual.py OOWL R1 1
 ```
 ## Testing and Evaluation
 
