@@ -75,4 +75,3 @@ To evaluate the single-encoder model, please use the following command:
 ```bash
 python testPiRO.py dataset_name single model_path
 ```
-## Acknowledgement
