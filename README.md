@@ -8,9 +8,9 @@ conda env create -f environment_piro.yml
 
 ## Datasets
 We use the following multi-view datasets in our work:
-- ObjectPI (also known as Objects in the Wild or OOWL)
-- ModelNet-40
-- FG3D
+- ObjectPI (also known as Objects in the Wild or OOWL) [1]
+- ModelNet-40 [2]
+- FG3D [3] 
 
 For learning, we have organized these datasets such that the multi-view images of each object identity are stored in a separate subfolder with an integer ID indicating the object-identity. 
 The train and test splits for the above-mentioned datasets can be downloaded from [Google Drive](https://drive.google.com/file/d/1BEl7XAqYK13NGOMuahMy-hxK4oSLRc8J/view?usp=sharing) .
@@ -75,3 +75,19 @@ To evaluate the single-encoder model, please use the following command:
 ```bash
 python testPiRO.py dataset_name single model_path
 ```
+
+## References
+[1] Chih-Hui Ho, Pedro Morgado, Amir Persekian, and Nuno Vasconcelos. PIEs: Pose invariant embeddings. In Computer Vision and Pattern Recognition (CVPR), 2019.  
+[2] Zhirong Wu, S. Song, A. Khosla, Fisher Yu, Linguang Zhang, Xiaoou Tang, and J. Xiao. 3D shapenets: A deep representation for volumetric shapes. In Computer Vision and Pattern Recognition (CVPR), pages 1912–1920, Los Alamitos, CA, USA, 2015.  
+[3] Xinhai Liu, Zhizhong Han, Yu-Shen Liu, and Matthias Zwicker. Fine-grained 3D shape classification with hierarchical part-view attentions. IEEE Transactions on Image Processing, 2021.  
+
+## Citation
+If you use this method in your research, please cite :  
+@InProceedings{Sarkar_2024_CVPR,  
+    author    = {Sarkar, Rohan and Kak, Avinash},  
+    title     = {Dual Pose-invariant Embeddings: Learning Category and Object-specific Discriminative Representations for Recognition and Retrieval},  
+    booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},  
+    month     = {June},  
+    year      = {2024},  
+    pages     = {17077-17085}  
+}  
